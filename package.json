@@ -11,10 +11,12 @@
   "dependencies": {
     "@next/font": "13.1.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "bootstrap": "^5.2.3",
     "next": "13.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
+    "react-styled-toggle": "^1.0.18",
     "redux": "^4.2.0"
   }
 }
