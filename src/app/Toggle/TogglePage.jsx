@@ -7,35 +7,26 @@ import {useState,useEffect} from 'react'
 
 function TogglePage() {
   const [state, setstate] = useState([]);
-  const [Users, setUsers] = useState([]);
-  const [Roles, setRoles] = useState([])
-  const [Resources, setResources] = useState([])
-  const [Channels, setChannels] = useState([])
-  const [ApiKeys, setApiKeys] = useState([])  
+  const [Entity, setEntity] = useState([]);
+  const [Parameter, setParameter] = useState(6865480);
   const [Additional, setAdditional] = useState([]);  
   const callData = async()=>{
         try {
-            const data=await axios.get("https://app.mtalkz.cloud/perms.php?id=5")
+            const data=await axios.get(`https://app.mtalkz.cloud/perms.php?id=${Parameter}`)
             setstate(data.data)
-           
-            setUsers(data?.data?.filter((item)=>item.indexOf("users")!=-1))
-            setRoles(data?.data?.filter((item)=>item.indexOf("roles")!=-1))
-            setResources(data?.data?.filter((item)=>item.indexOf("resources")!=-1))
-            setChannels(data?.data?.filter((item)=>item.indexOf("channels")!=-1))
-            setApiKeys(data?.data?.filter((item)=>item.indexOf("api-keys")!=-1))
-            setAdditional(data?.data?.filter((item)=>item.indexOf("users")==-1 && item.indexOf("roles")==-1 && item.indexOf("resources")==-1 && item.indexOf("channels")==-1 && item.indexOf("api-keys")==-1))
-
-
+            setAdditional(data?.data?.filter((item)=>item.indexOf("show")===-1 && item.indexOf("update")===-1 && item.indexOf("index")===-1 && item.indexOf("destroy")==-1 && item.indexOf("store")==-1))
+            const EntityData =  [...new Set(data?.data?.map((item)=>item.slice(0,item.indexOf("."))))]
+            setEntity(EntityData)
+            
         } catch (error) {
                 console.log(error)
         }
     }   
-    console.log(Users.filter((item)=>item.indexOf("list")!=-1))
-    
+    console.log(Entity)
+
     useEffect(() => {
         callData()
     }, [])
-
     return (
         <div className=' container '>
         <h5>Standard Permission</h5>
@@ -51,196 +42,52 @@ function TogglePage() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr >
-                        <th scope="row">User</th>
-                      {
-                        Users.filter((item)=>item.indexOf("list")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Users.filter((item)=>item.indexOf("show")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Users.filter((item)=>item.indexOf("store")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Users.filter((item)=>item.indexOf("update")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Users.filter((item)=>item.indexOf("destroy")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                    </tr>
-                    <tr>
-                        <th scope="row">Roles</th>
+                  {
+                    Entity.map((item,index)=>{
+                      return <tr>
+                        <th>
+                          {(item.slice(0,item.indexOf('.')).replace('-'," "))}
+                        </th>
+                        
                         {
-                        Roles.filter((item)=>item.indexOf("list")!=-1).length==0 ?(
+                          (state.filter((item2)=>item2.split(".")[0]==item)).filter(x=>x.split(".")[1]=="index").length ==0 ?(
                             <td className=''></td>
-                        ):(
+                          ):(
                         <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Roles.filter((item)=>item.indexOf("show")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Roles.filter((item)=>item.indexOf("store")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Roles.filter((item)=>item.indexOf("update")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Roles.filter((item)=>item.indexOf("destroy")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                    </tr>
-                    <tr>
-                        <th scope="row">Resources</th>
+                        )  
+                        }
+                        
                         {
-                        Resources.filter((item)=>item.indexOf("list")!=-1).length==0 ?(
+                          (state.filter((item2)=>item2.split(".")[0]==item)).filter(x=>x.split(".")[1]=="show").length ==0 ?(
                             <td className=''></td>
-                        ):(
+                          ):(
                         <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Resources.filter((item)=>item.indexOf("show")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Resources.filter((item)=>item.indexOf("store")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Resources.filter((item)=>item.indexOf("update")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Resources.filter((item)=>item.indexOf("destroy")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                    </tr>
-                    <tr>
-                        <th scope="row">Channels</th>
+                        )  
+                        }
                         {
-                       Channels.filter((item)=>item.indexOf("list")!=-1).length==0 ?(
+                          (state.filter((item2)=>item2.split(".")[0]==item)).filter(x=>x.split(".")[1]=="store").length ==0 ?(
                             <td className=''></td>
-                        ):(
+                          ):(
                         <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Channels.filter((item)=>item.indexOf("show")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Channels.filter((item)=>item.indexOf("store")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Channels.filter((item)=>item.indexOf("update")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        Channels.filter((item)=>item.indexOf("destroy")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                    </tr>
-                    <tr>
-                        <th scope="row">Api Keys</th>
+                        )  
+                        }
                         {
-                        ApiKeys.filter((item)=>item.indexOf("list")!=-1).length==0 ?(
+                          (state.filter((item2)=>item2.split(".")[0]==item)).filter(x=>x.split(".")[1]=="update").length ==0 ?(
                             <td className=''></td>
-                        ):(
+                          ):(
                         <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        ApiKeys.filter((item)=>item.indexOf("show")!=-1).length==0 ?(
+                        )  
+                        }
+                        {
+                          (state.filter((item2)=>item2.split(".")[0]==item)).filter(x=>x.split(".")[1]=="destroy").length ==0 ?(
                             <td className=''></td>
-                        ):(
+                          ):(
                         <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        ApiKeys.filter((item)=>item.indexOf("store")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        ApiKeys.filter((item)=>item.indexOf("update")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                      {
-                        ApiKeys.filter((item)=>item.indexOf("destroy")!=-1).length==0 ?(
-                            <td className=''></td>
-                        ):(
-                        <ToggleButtonComponent/>
-                        )
-                      }
-                    </tr>
+                        )  
+                        }
+                      </tr>
+                    })
+                  }
                 </tbody>
             </table>
             <h5>Additional permission</h5>
